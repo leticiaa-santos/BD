@@ -1,0 +1,34 @@
+1:
+portugues - Carla Mendes
+
+historia - Ana Souza
+
+matematica - Ana Souza
+
+
+2:
+matemática: Ana Souza
+
+história: Pedro Lima
+
+português: João Santos
+
+
+3:
+logica de programação: Maria eduarda
+
+banco de dados: Rafael
+
+estrutura de dados: Emily
+
+desenvolvimento web: Emily
+
+
+4:
+Lógica de programação: Miguel
+
+Banco de dados: Deborah
+
+Desenvolvimento Web: Lucas
+
+Estrutura de dados: Moisés
