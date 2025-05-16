@@ -101,3 +101,46 @@ LEFT JOIN autores ON autores.id_autor = livros.id_autor;
 SELECT autores.nome_autor, livros.titulo
 FROM livros
 RIGHT JOIN autores ON autores.id_autor = livros.id_autor;
+
+-- FULL OUTER JOIN exercicio 4
+SELECT livros.titulo, editoras.nome_editora
+FROM editoras
+LEFT JOIN livros ON editoras.id_editora = livros.id_editora
+UNION
+SELECT livros.titulo, editoras.nome_editora
+FROM editoras
+RIGHT JOIN livros ON editoras.id_editora = livros.id_editora;
+
+-- CROSS JOIN exercicio 5
+SELECT leitores.nome_leitor, livros.titulo
+FROM livros
+CROSS JOIN leitores;
+
+-- FULL OUTER JOIN exercicio 6
+SELECT nome_autor
+FROM autores
+UNION
+SELECT nome_editora
+FROM editoras;
+
+-- LEFT JOIN com erro exercicio 7
+SELECT emprestimos.id_emprestimo, livros.titulo
+FROM emprestimos
+LEFT JOIN livros ON livros.id_livro = emprestimos.id_livro;
+
+-- INNER JOIN com erro exercicio 8
+SELECT emprestimos_leitores.id_emprestimo, leitores.nome_leitor
+FROM emprestimos_leitores
+INNER JOIN leitores ON leitores.id_leitor = emprestimos_leitores.id_leitor;
+
+-- livros com editoras, mesmo que a editora não tenha livro exercicio 9
+SELECT editoras.nome_editora, livros.titulo
+FROM editoras
+LEFT JOIN livros ON livros.id_editora = editoras.id_editora;
+
+-- leitores e livros que pegaram, se houver exercicio 10 ----- NÃO FUNCONA AINDA ---------
+SELECT leitores.nome_leitor, livros.titulo
+FROM emprestimos_leitores
+INNER JOIN leitores ON leitores.id_leitores = emprestimos_leitores.id_leitores
+INNER JOIN livros ON livros.id_livro = emprestimos.id_livro;
+
