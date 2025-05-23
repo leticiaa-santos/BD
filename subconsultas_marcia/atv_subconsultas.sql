@@ -72,14 +72,98 @@ INSERT INTO Emprestimos (id, id_livro, id_leitor, data_emprestimo, data_devoluca
 (502, 304, 401, '2025-05-05', NULL),
 (503, 303, 402, '2025-05-02', '2025-05-09');
 
--- exercicio 1
+-- exercicio 1: título e o ano de publicação dos livros cuja editora é “Companhia das Letras”. (subconsulta no Where)
 SELECT titulo, ano_publicacao
 FROM Livros
 WHERE id_editora = (
 	SELECT id FROM Editoras WHERE Editoras.nome = 'Companhia das Letras'
 );
 
--- exercicio 2
+-- exercicio 2:  nomes dos autores que possuem livros da editora “Rocco”. (subconsulta no Where)
+SELECT Autores.nome
+FROM Autores
+INNER JOIN Livros ON Livros.id_autor = Autores.id
+INNER JOIN Editoras ON Editoras.id = Livros.id_editora
+WHERE Editoras.id IN (
+	SELECT id FROM Editoras
+    WHERE nome = 'Rocco'
+);
+
+-- exercicio 3: títulos dos livros que foram emprestados por algum leitor com o nome “Ana Clara”
+SELECT titulo
+FROM Livros
+WHERE id IN (
+	SELECT id_livro
+    FROM Emprestimos
+		WHERE id_leitor = (
+			SELECT id
+            FROM Leitores
+            WHERE nome = "Ana Clara"
+));
+
+-- exercicio 4: livros que ainda estão emprestados (sem data de devolução).
+SELECT titulo
+FROM Livros
+WHERE id IN (
+	SELECT id_livro
+    FROM Emprestimos
+		WHERE data_devolucao IS NULL
+);
+
+-- exercicio 5: nomes dos autores que escreveram livros que ainda estão emprestados (sem data de devolução)
 SELECT nome
-FROM autores
-WHERE 
+FROM Autores
+WHERE id IN (
+	SELECT id_autor
+    FROM Livros
+	WHERE id IN (
+		SELECT id_livro
+		FROM Emprestimos
+		WHERE data_devolucao IS NULL
+));
+
+-- exercicio 6: nomes dos leitores que ainda têm livros emprestados.
+SELECT nome
+FROM Leitores
+WHERE id IN (
+	SELECT id_leitor
+    FROM Emprestimos
+		WHERE data_devolucao IS NULL
+);
+
+-- exercicio 7: nomes dos leitores e, ao lado, o nome do último livro que cada um pegou emprestado.
+SELECT Lt.nome, L.titulo
+FROM Leitores Lt
+LEFT JOIN Emprestimos E ON E.id_leitor = Lt.id
+LEFT JOIN Livros L ON L.id = E.id_livro
+WHERE E.data_emprestimo = (
+	SELECT MAX(E.data_emprestimo)
+    FROM Emprestimos
+    WHERE id_leitor = Lt.id
+);
+
+-- exercicio 8: livros com o nome da editora ao lado, usando subconsulta no SELECT
+SELECT Livros.titulo,
+	(SELECT nome FROM Editoras WHERE Editoras.id = Livros.id_editora) AS editora
+FROM Livros;
+
+-- exercicio 9:  nomes e títulos de livros emprestados atualmente, usando uma subconsulta no FROM.
+SELECT T.nome, T.titulo -- abela temporaria para a subconsulta
+FROM (
+	SELECT
+		E.id_livro,
+        E.id_leitor,
+        Lt.nome AS nome,
+        L.titulo AS titulo,
+        E.data_devolucao
+        FROM Emprestimos E
+        INNER JOIN Leitores Lt ON Lt.id = E.id_leitor
+        INNER JOIN Livros L ON L.id = E.id_livro
+) AS T
+WHERE T.data_devolucao IS NULL;
+
+-- exercicio 10: nomes das editoras que publicaram livros emprestados, usando uma subconsulta no FROM
+/* SELECT E.nome
+FROM (
+	SELECT
+); */

@@ -138,9 +138,14 @@ SELECT editoras.nome_editora, livros.titulo
 FROM editoras
 LEFT JOIN livros ON livros.id_editora = editoras.id_editora;
 
--- leitores e livros que pegaram, se houver exercicio 10 ----- NÃO FUNCONA AINDA ---------
+-- leitores e livros que pegaram, se houver exercicio 10
 SELECT leitores.nome_leitor, livros.titulo
-FROM emprestimos_leitores
-INNER JOIN leitores ON leitores.id_leitores = emprestimos_leitores.id_leitores
-INNER JOIN livros ON livros.id_livro = emprestimos.id_livro;
+FROM leitores
+LEFT JOIN emprestimos_leitores ON emprestimos_leitores.id_leitor = leitores.id_leitor
+LEFT JOIN emprestimos ON emprestimos.id_emprestimo = emprestimos_leitores.id_emprestimo
+LEFT JOIN livros ON livros.id_livro = emprestimos.id_livro;
 
+-- Todos os autores e os títulos dos livros, mesmo que não tenham livros exercício 11
+SELECT autores.nome_autor, livros.titulo
+FROM autores
+LEFT JOIN livros ON livros.id_autor = autores.id_autor;
