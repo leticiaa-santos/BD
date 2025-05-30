@@ -148,7 +148,7 @@ SELECT Livros.titulo,
 FROM Livros;
 
 -- exercicio 9:  nomes e títulos de livros emprestados atualmente, usando uma subconsulta no FROM.
-SELECT T.nome, T.titulo -- abela temporaria para a subconsulta
+SELECT T.nome, T.titulo -- Tabela temporaria para a subconsulta
 FROM (
 	SELECT
 		E.id_livro,
@@ -163,7 +163,10 @@ FROM (
 WHERE T.data_devolucao IS NULL;
 
 -- exercicio 10: nomes das editoras que publicaram livros emprestados, usando uma subconsulta no FROM
-/* SELECT E.nome
+SELECT sub.editora -- Tabela temporaria para a subconsulta
 FROM (
-	SELECT
-); */
+	SELECT Ed.nome AS editora
+    FROM Emprestimos E
+    INNER JOIN Livros L ON E.id_livro = L.id
+    INNER JOIN Editoras Ed ON L.id_editora = Ed.id
+) AS sub;
